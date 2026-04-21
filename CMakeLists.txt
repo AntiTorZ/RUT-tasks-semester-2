@@ -25,19 +25,19 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-# Библиотека классов
-add_library(approximation_lib STATIC
+add_library(Library STATIC
     src/Point.cpp
     src/PiecewiseLinearApproximation.cpp
     src/ZeroOrderSegment.cpp
 )
+target_include_directories(Library PUBLIC include)
 
-target_include_directories(approximation_lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+add_executable(Demo src/main.cpp)
+target_link_libraries(Demo PRIVATE Library)
 
-# Демонстрационный проект
-add_subdirectory(Demo)
+add_executable(Tests tests/tests.cpp)
+target_include_directories(Tests PRIVATE include)
+target_link_libraries(Tests PRIVATE Library gtest gtest_main)
 
-# Тесты
-add_subdirectory(tests)
+include(GoogleTest)
+gtest_discover_tests(Tests)
