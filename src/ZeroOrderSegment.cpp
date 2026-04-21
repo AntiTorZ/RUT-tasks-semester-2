@@ -23,4 +23,20 @@ double ZeroOrderSegment::calculateY(double x) const {
 std::ostream& operator<<(std::ostream& os, const ZeroOrderSegment& seg) {
     const auto& pts = seg.getPoints();
     os << "=== Экстраполятор нулевого порядка ===\n";
-    os
+    os << "Опорные точки (" << pts.size() << "):\n";
+    for (size_t i = 0; i < pts.size(); ++i) {
+        os << "  [" << i << "] " << pts[i];
+        if (i < pts.size() - 1) {
+            os << " -> y=" << std::fixed << std::setprecision(2) << pts[i].getY()
+               << " на [" << pts[i].getX() << ", " << pts[i+1].getX() << ")";
+        }
+        os << "\n";
+    }
+    return os;
+}
+
+ZeroOrderSegment ZeroOrderSegment::readFromStream(std::istream& is) {
+    return ZeroOrderSegment(readPointsFromStream(is));
+}
+
+} // namespace miit::approximation
