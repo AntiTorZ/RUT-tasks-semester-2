@@ -2,7 +2,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-// Реализация Point
 Point::Point() : x(0), y(0)
 {
 }
@@ -21,7 +20,6 @@ bool Point::operator!=(const Point& other) const
 	return !(*this == other);
 }
 
-// Реализация Quadrilateral
 double Quadrilateral::CrossProduct(const Point& p1, const Point& p2, const Point& p3) const
 {
 	// Векторы: p1p2 и p1p3
@@ -42,10 +40,8 @@ double Quadrilateral::GetAngle(const Point& p1, const Point& p2, const Point& p3
 	double v2x = p3.x - p2.x;
 	double v2y = p3.y - p2.y;
 
-	// Скалярное произведение
 	double dot = v1x * v2x + v1y * v2y;
 
-	// Длины векторов
 	double len1 = sqrt(v1x * v1x + v1y * v1y);
 	double len2 = sqrt(v2x * v2x + v2y * v2y);
 
@@ -54,29 +50,24 @@ double Quadrilateral::GetAngle(const Point& p1, const Point& p2, const Point& p3
 		return 0;
 	}
 
-	// Косинус угла
 	double cosAngle = dot / (len1 * len2);
 
-	// Ограничиваем от -1 до 1
 	if (cosAngle > 1) cosAngle = 1;
 	if (cosAngle < -1) cosAngle = -1;
 
-	// Возвращаем угол в градусах
 	return acos(cosAngle) * 180.0 / M_PI;
 }
 
 void Quadrilateral::CheckQuadrilateral(const Point& p1, const Point& p2, const Point& p3, const Point& p4)
 {
-	// Проверяем, не совпадают ли точки
 	if (p1 == p2 || p1 == p3 || p1 == p4 ||
 		p2 == p3 || p2 == p4 ||
 		p3 == p4)
 	{
-		cerr << "Ошибка: некоторые вершины совпадают!" << endl;
+		cerr << "Ошибка: некоторые вершины совпадают" << endl;
 		exit(1);
 	}
 
-	// Проверяем, не лежат ли три точки на одной прямой
 	double cp1 = CrossProduct(p1, p2, p3);
 	double cp2 = CrossProduct(p2, p3, p4);
 	double cp3 = CrossProduct(p3, p4, p1);
@@ -86,7 +77,7 @@ void Quadrilateral::CheckQuadrilateral(const Point& p1, const Point& p2, const P
 
 	if (fabs(cp1) < EPS || fabs(cp2) < EPS || fabs(cp3) < EPS || fabs(cp4) < EPS)
 	{
-		cerr << "Ошибка: три или более точки лежат на одной прямой!" << endl;
+		cerr << "Ошибка: три или более точки лежат на одной прямой" << endl;
 		exit(1);
 	}
 }
@@ -120,13 +111,11 @@ Quadrilateral::Quadrilateral(const double x1, const double y1, const double x2, 
 
 bool Quadrilateral::IsConvex() const
 {
-	// Вычисляем векторные произведения для всех углов
 	double cp1 = CrossProduct(p1, p2, p3);
 	double cp2 = CrossProduct(p2, p3, p4);
 	double cp3 = CrossProduct(p3, p4, p1);
 	double cp4 = CrossProduct(p4, p1, p2);
 
-	// Если все произведения одного знака - четырехугольник выпуклый
 	bool allPositive = (cp1 > 0) && (cp2 > 0) && (cp3 > 0) && (cp4 > 0);
 	bool allNegative = (cp1 < 0) && (cp2 < 0) && (cp3 < 0) && (cp4 < 0);
 
@@ -135,20 +124,16 @@ bool Quadrilateral::IsConvex() const
 
 bool Quadrilateral::CanDescribeCircle() const
 {
-	// Сначала проверяем, что четырехугольник выпуклый
 	if (!IsConvex())
 	{
 		return false;
 	}
 
-	// Вычисляем углы при вершинах
 	double angle1 = GetAngle(p4, p1, p2); // угол при p1
 	double angle2 = GetAngle(p1, p2, p3); // угол при p2
 	double angle3 = GetAngle(p2, p3, p4); // угол при p3
 	double angle4 = GetAngle(p3, p4, p1); // угол при p4
 
-	// Проверяем сумму противоположных углов
-	// Для вписанного четырехугольника: angle1 + angle3 = 180 и angle2 + angle4 = 180
 	const double EPS = 1.0; // допустимая погрешность в градусах
 
 	double sum1 = angle1 + angle3;
