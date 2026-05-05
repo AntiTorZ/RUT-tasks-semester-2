@@ -1,10 +1,11 @@
 #include "Class Quadrilateral.h"
 
 /**
-* @brief Считывает значение введённое с клавиатуры
-* @return Значение введённое с клавиатуры, если оно считано правильно
+* @brief Считывает значение координаты с клавиатуры
+* @param prompt - сообщение для пользователя
+* @return Значение введенной координаты
 */
-const double GetDouble(const string& prompt);
+const double GetCoordinate(const string& prompt);
 
 /**
 * @brief Точка входа в программу
@@ -12,76 +13,56 @@ const double GetDouble(const string& prompt);
 */
 int main(void)
 {
-	system("chcp 1251");
-	system("CLS");
+    system("chcp 1251");
 
-	cout << "Проверка четырехугольников" << endl << endl;
+    cout << "Проверка четырехугольника" << endl << endl;
 
-	// Квадрат
-	cout << "Тест 1: Квадрат" << endl;
-	Quadrilateral q1(0, 0, 4, 0, 4, 4, 0, 4);
-	q1.PrintInfo();
-	cout << endl;
+    cout << "Вершина 1" << endl;
+    const double x1 = GetCoordinate("Введите x1: ");
+    const double y1 = GetCoordinate("Введите y1: ");
+    Point p1(x1, y1);
 
-	// Прямоугольник
-	cout << "Тест 2: Прямоугольник" << endl;
-	Quadrilateral q2(0, 0, 6, 0, 6, 3, 0, 3);
-	q2.PrintInfo();
-	cout << endl;
+    cout << endl << "Вершина 2" << endl;
+    const double x2 = GetCoordinate("Введите x2: ");
+    const double y2 = GetCoordinate("Введите y2: ");
+    Point p2(x2, y2);
 
-	// Произвольный выпуклый четырехугольник
-	cout << "Тест 3: Произвольный выпуклый" << endl;
-	Quadrilateral q3(0, 0, 5, 1, 4, 4, 1, 3);
-	q3.PrintInfo();
-	cout << endl;
+    cout << endl << "Вершина 3" << endl;
+    const double x3 = GetCoordinate("Введите x3: ");
+    const double y3 = GetCoordinate("Введите y3: ");
+    Point p3(x3, y3);
 
-	// Равнобедренная трапеция
-	cout << "Тест 4: Равнобедренная трапеция" << endl;
-	Quadrilateral q4(0, 0, 6, 0, 4, 3, 2, 3);
-	q4.PrintInfo();
-	cout << endl;
+    cout << endl << "Вершина 4" << endl;
+    const double x4 = GetCoordinate("Введите x4: ");
+    const double y4 = GetCoordinate("Введите y4: ");
+    Point p4(x4, y4);
 
-	// Тест 5: Невыпуклый четырехугольник
-	cout << "--- Тест 5: Невыпуклый ---" << endl;
-	Quadrilateral q5(0, 0, 4, 0, 2, 1, 2, 4);
-	q5.PrintInfo();
-	cout << endl;
+    try
+    {
+        Quadrilateral Q(p1, p2, p3, p4);
 
-	// Ввод своих координат
-	cout << "Ввод своих координат" << endl;
-	
-	double x1 = GetDouble("Введите x1: ");
-	double y1 = GetDouble("Введите y1: ");
-	double x2 = GetDouble("Введите x2: ");
-	double y2 = GetDouble("Введите y2: ");
-	double x3 = GetDouble("Введите x3: ");
-	double y3 = GetDouble("Введите y3: ");
-	double x4 = GetDouble("Введите x4: ");
-	double y4 = GetDouble("Введите y4: ");
+        cout << endl << "Результаты:" << endl;
+        cout << "Четырехугольник выпуклый: " << (Q.IsConvex() ? "ДА" : "НЕТ") << endl;
+        cout << "Можно описать окружность: " << (Q.CanDescribeCircle() ? "ДА" : "НЕТ") << endl;
+    }
+    catch (...)
+    {
+        cerr << "Произошла ошибка при создании четырехугольника" << endl;
+        return 1;
+    }
 
-	try
-	{
-		Quadrilateral q(x1, y1, x2, y2, x3, y3, x4, y4);
-		cout << endl;
-		q.PrintInfo();
-	}
-	catch (...)
-	{
-		cerr << "Ошибка создания четырехугольника" << endl;
-	}
-
-	return 0;
+    return 0;
 }
 
-const double GetDouble(const string& prompt)
+const double GetCoordinate(const string& prompt)
 {
-	double number = 0;
-	cout << prompt;
-	cin >> number;
-	if (cin.fail())
-	{
-		cerr << "Ошибка ввода!" << endl;
-		exit(1);
-	}
-	return number;
+    double number = 0;
+    cout << prompt;
+    cin >> number;
+    if (cin.fail())
+    {
+        cerr << "Ошибка ввода - введено не число" << endl;
+        exit(1);
+    }
+    return number;
 }
