@@ -15,8 +15,6 @@ int main(void)
 {
     system("chcp 1251");
 
-    cout << "Проверка четырехугольника" << endl << endl;
-
     cout << "Вершина 1" << endl;
     const double x1 = GetCoordinate("Введите x1: ");
     const double y1 = GetCoordinate("Введите y1: ");
@@ -41,7 +39,6 @@ int main(void)
     {
         Quadrilateral Q(p1, p2, p3, p4);
 
-        cout << endl << "Результаты:" << endl;
         cout << "Четырехугольник выпуклый: " << (Q.IsConvex() ? "ДА" : "НЕТ") << endl;
         cout << "Можно описать окружность: " << (Q.CanDescribeCircle() ? "ДА" : "НЕТ") << endl;
     }
@@ -61,7 +58,7 @@ const double GetCoordinate(const string& prompt)
     cin >> number;
     if (cin.fail())
     {
-        cerr << "Ошибка ввода - введено не число" << endl;
+        cerr << "Ошибка ввода: введено не число" << endl;
         exit(1);
     }
     return number;
