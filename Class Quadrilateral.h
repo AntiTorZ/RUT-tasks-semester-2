@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <float.h>
 
 using namespace std;
 
@@ -49,10 +50,6 @@ struct Point
 class Quadrilateral
 {
 private:
-    /**
-    * @brief Константа точности для сравнения чисел с плавающей точкой
-    */
-    static const double EPS;
 
     /**
     * @param p1 - первая вершина
