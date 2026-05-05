@@ -45,7 +45,7 @@ double Quadrilateral::GetAngle(const Point& A, const Point& B, const Point& C) c
     double len1 = sqrt(v1x * v1x + v1y * v1y);
     double len2 = sqrt(v2x * v2x + v2y * v2y);
 
-    if (fabs(len1) < EPS || fabs(len2) < EPS)
+    if (fabs(len1) < DBL_EPSILON || fabs(len2) < DBL_EPSILON)
     {
         return 0;
     }
@@ -72,7 +72,7 @@ void Quadrilateral::CheckQuadrilateral(const Point& p1, const Point& p2, const P
     double cp2 = CrossProduct(p2, p3, p4);
     double cp3 = CrossProduct(p3, p4, p1);
 
-    if (fabs(cp1) < EPS || fabs(cp2) < EPS || fabs(cp3) < EPS)
+    if (fabs(cp1) < DBL_EPSILON || fabs(cp2) < DBL_EPSILON || fabs(cp3) < DBL_EPSILON)
     {
          cerr << "Ошибка: три или более точек лежат на одной прямой" << endl;
          exit(1);
