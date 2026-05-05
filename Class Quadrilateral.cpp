@@ -2,8 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <cstdlib>
-
-const double Quadrilateral::EPS = 1e-9;
+#include <float.h>
 
 Point::Point() : x(0), y(0)
 {
@@ -15,8 +14,7 @@ Point::Point(const double x, const double y) : x(x), y(y)
 
 bool Point::operator==(const Point& other) const
 {
-    const double EPS = 1e-9;
-    return fabs(x - other.x) < EPS && fabs(y - other.y) < EPS;
+    return fabs(x - other.x) < DBL_EPSILON && fabs(y - other.y) < DBL_EPSILON;
 }
 
 bool Point::operator!=(const Point& other) const
