@@ -1,7 +1,7 @@
 #include "Class Quadrilateral.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include <cstdlib> // Для exit()
+#include <cstdlib>
 
 Point::Point() : x(0), y(0)
 {
