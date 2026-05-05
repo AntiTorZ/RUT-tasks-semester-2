@@ -36,6 +36,11 @@ struct Point
     * @brief Оператор сравнения на равенство
     */
     bool operator==(const Point& other) const;
+
+    /**
+    * @brief Оператор сравнения на неравенство
+    */
+    bool operator!=(const Point& other) const;
 };
 
 /**
@@ -44,6 +49,11 @@ struct Point
 class Quadrilateral
 {
 private:
+    /**
+    * @brief Константа точности для сравнения чисел с плавающей точкой
+    */
+    static const double EPS;
+
     /**
     * @param p1 - первая вершина
     */
@@ -69,7 +79,7 @@ private:
     * @param a - начальная точка
     * @param b - конец первого вектора
     * @param c - конец второго вектора
-    * @return Знак векторного произведения (z-компонента)
+    * @return Значение векторного произведения
     */
     double CrossProduct(const Point& a, const Point& b, const Point& c) const;
 
