@@ -3,6 +3,8 @@
 #include <math.h>
 #include <cstdlib>
 
+const double Quadrilateral::EPS = 1e-9;
+
 Point::Point() : x(0), y(0)
 {
 }
@@ -13,11 +15,18 @@ Point::Point(const double x, const double y) : x(x), y(y)
 
 bool Point::operator==(const Point& other) const
 {
-    return x == other.x && y == other.y;
+    const double EPS = 1e-9;
+    return fabs(x - other.x) < EPS && fabs(y - other.y) < EPS;
+}
+
+bool Point::operator!=(const Point& other) const
+{
+    return !(*this == other);
 }
 
 double Quadrilateral::CrossProduct(const Point& a, const Point& b, const Point& c) const
 {
+    // Векторы: ab и ac
     double v1x = b.x - a.x;
     double v1y = b.y - a.y;
     double v2x = c.x - a.x;
@@ -38,15 +47,15 @@ double Quadrilateral::GetAngle(const Point& A, const Point& B, const Point& C) c
     double len1 = sqrt(v1x * v1x + v1y * v1y);
     double len2 = sqrt(v2x * v2x + v2y * v2y);
 
-    if (len1 == 0 || len2 == 0)
+    if (fabs(len1) < EPS || fabs(len2) < EPS)
     {
         return 0;
     }
 
     double cosAngle = dot / (len1 * len2);
 
-    if (cosAngle > 1) cosAngle = 1;
-    if (cosAngle < -1) cosAngle = -1;
+    if (cosAngle > 1.0) cosAngle = 1.0;
+    if (cosAngle < -1.0) cosAngle = -1.0;
 
     return acos(cosAngle) * 180.0 / M_PI;
 }
@@ -61,8 +70,6 @@ void Quadrilateral::CheckQuadrilateral(const Point& p1, const Point& p2, const P
         exit(1);
     }
 
-    const double EPS = 1e-10;
-    
     double cp1 = CrossProduct(p1, p2, p3);
     double cp2 = CrossProduct(p2, p3, p4);
     double cp3 = CrossProduct(p3, p4, p1);
@@ -111,12 +118,12 @@ bool Quadrilateral::CanDescribeCircle() const
         return false;
     }
 
-    double angle1 = GetAngle(p4, p1, p2);
-    double angle3 = GetAngle(p2, p3, p4);
+    double angle1 = GetAngle(p4, p1, p2); // угол при p1
+    double angle3 = GetAngle(p2, p3, p4); // угол при p3
 
-    const double EPS = 1.0;
+    const double EPS_ANGLE = 1.0;
 
     double sum = angle1 + angle3;
 
-    return (fabs(sum - 180.0) < EPS);
+    return (fabs(sum - 180.0) < EPS_ANGLE);
 }
