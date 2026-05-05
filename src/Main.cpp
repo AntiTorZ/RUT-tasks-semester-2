@@ -7,9 +7,8 @@ using namespace miit::approximation;
 
 int main() {
     try {
-        std::cout << "=== Экстраполятор нулевого порядка (Вариант 18) ===\n\n";
+        std::cout << "Экстраполятор нулевого порядка\n\n";
 
-        // 1. Инициализация через список
         std::cout << "[1] Создание через initializer_list:\n";
         ZeroOrderSegment zoh1({ {1.0, 2.0}, {3.0, 4.0}, {5.0, 1.0}, {7.0, 3.0} });
         std::cout << zoh1 << "\n";
@@ -20,13 +19,12 @@ int main() {
             std::cout << "  y(" << x << ") = " << zoh1.calculateY(x) << "\n";
         }
 
-        // 2. Динамическое добавление
         std::cout << "\n[2] Добавление точки {4.0, 5.0}:\n";
         zoh1.addPoint({4.0, 5.0});
         std::cout << zoh1;
         std::cout << "  y(4.5) после добавления = " << zoh1.calculateY(4.5) << "\n";
 
-        // 3. Интерактивный ввод (опционально)
+        // Интерактивный ввод (опционально)
         std::cout << "\n[3] Ввод из потока (нажмите Enter для пропуска):\n";
         std::cout << "Введите 'y' для ручного ввода: ";
         std::string choice;
@@ -37,7 +35,6 @@ int main() {
             std::cout << "\nСозданный объект:\n" << zoh2;
         }
 
-        // 4. Полиморфизм
         std::cout << "\n[4] Полиморфизм (базовый указатель):\n";
         std::vector<PiecewiseLinearApproximation*> vec;
         vec.push_back(new ZeroOrderSegment({{0, 1}, {2, 3}, {4, 2}}));
