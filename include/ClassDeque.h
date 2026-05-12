@@ -17,11 +17,6 @@ private:
     Type* data;
 
     /**
-    * @param capacity - вместимость дека
-    */
-    size_t capacity;
-
-    /**
     * @param count - количество элементов в деке
     */
     size_t count;
@@ -40,17 +35,17 @@ public:
     /**
     * @brief Конструктор класса по-умолчанию, задаёт пустой дек
     */
-    Deque() : data(nullptr), capacity(0), count(0) {}
+    Deque() : data(nullptr), count(0) {}
 
     /**
     * @brief Конструктор класса, задаёт дек по списку инициализации
     * @param other - список инициализации
     */
-    Deque(initializer_list<Type> other) : data(nullptr), capacity(other.size()), count(other.size())
+    Deque(const initializer_list<Type> other) : data(nullptr), count(other.size())
     {
-        if (capacity > 0)
+        if (count > 0)
         {
-            data = new Type[capacity];
+            data = new Type[count];
             size_t i = 0;
             for (const auto& value : other)
             {
@@ -63,11 +58,11 @@ public:
     * @brief Конструктор копирования
     * @param other - дек для копирования
     */
-    Deque(const Deque& other) : data(nullptr), capacity(other.capacity), count(other.count)
+    Deque(const Deque& other) : data(nullptr), count(other.count)
     {
-        if (capacity > 0)
+        if (count > 0)
         {
-            data = new Type[capacity];
+            data = new Type[count];
             for (size_t i = 0; i < count; i++)
             {
                 data[i] = other.data[i];
@@ -79,10 +74,9 @@ public:
     * @brief Конструктор перемещения
     * @param other - дек для перемещения
     */
-    Deque(Deque&& other) noexcept : data(other.data), capacity(other.capacity), count(other.count)
+    Deque(Deque&& other) noexcept : data(other.data), count(other.count)
     {
         other.data = nullptr;
-        other.capacity = 0;
         other.count = 0;
     }
 
@@ -92,22 +86,18 @@ public:
     */
     void push_back(const Type& object)
     {
-        if (count >= capacity)
+        Type* newData = new Type[count + 1];
+        
+        for (size_t i = 0; i < count; i++)
         {
-            size_t newCapacity = (capacity == 0) ? 1 : capacity * 2;
-            Type* newData = new Type[newCapacity];
-            
-            for (size_t i = 0; i < count; i++)
-            {
-                newData[i] = data[i];
-            }
-            
-            delete[] data;
-            data = newData;
-            capacity = newCapacity;
+            newData[i] = data[i];
         }
         
-        data[count++] = object;
+        newData[count] = object;
+        
+        delete[] data;
+        data = newData;
+        count++;
     }
 
     /**
@@ -117,6 +107,15 @@ public:
     {
         if (count > 0)
         {
+            Type* newData = new Type[count - 1];
+            
+            for (size_t i = 0; i < count - 1; i++)
+            {
+                newData[i] = data[i];
+            }
+            
+            delete[] data;
+            data = newData;
             count--;
         }
         else
@@ -131,31 +130,17 @@ public:
     */
     void push_front(const Type& object)
     {
-        if (count >= capacity)
+        Type* newData = new Type[count + 1];
+        
+        newData[0] = object;
+        for (size_t i = 0; i < count; i++)
         {
-            size_t newCapacity = (capacity == 0) ? 1 : capacity * 2;
-            Type* newData = new Type[newCapacity];
-            
-            newData[0] = object;
-            for (size_t i = 0; i < count; i++)
-            {
-                newData[i + 1] = data[i];
-            }
-            
-            delete[] data;
-            data = newData;
-            capacity = newCapacity;
-            count++;
+            newData[i + 1] = data[i];
         }
-        else
-        {
-            for (size_t i = count; i > 0; i--)
-            {
-                data[i] = data[i - 1];
-            }
-            data[0] = object;
-            count++;
-        }
+        
+        delete[] data;
+        data = newData;
+        count++;
     }
 
     /**
@@ -165,10 +150,15 @@ public:
     {
         if (count > 0)
         {
+            Type* newData = new Type[count - 1];
+            
             for (size_t i = 0; i < count - 1; i++)
             {
-                data[i] = data[i + 1];
+                newData[i] = data[i + 1];
             }
+            
+            delete[] data;
+            data = newData;
             count--;
         }
         else
@@ -258,12 +248,11 @@ public:
         {
             delete[] data;
             
-            capacity = other.capacity;
             count = other.count;
             
-            if (capacity > 0)
+            if (count > 0)
             {
-                data = new Type[capacity];
+                data = new Type[count];
                 for (size_t i = 0; i < count; i++)
                 {
                     data[i] = other.data[i];
@@ -289,11 +278,9 @@ public:
             delete[] data;
             
             data = other.data;
-            capacity = other.capacity;
             count = other.count;
             
             other.data = nullptr;
-            other.capacity = 0;
             other.count = 0;
         }
         return *this;
@@ -304,7 +291,7 @@ public:
     * @param index - индекс элемента
     * @return Ссылка на элемент
     */
-    Type& operator[](size_t index)
+    Type& operator[](const size_t index)
     {
         if (index >= count)
         {
@@ -318,7 +305,7 @@ public:
     * @param index - индекс элемента
     * @return Ссылка на элемент
     */
-    const Type& operator[](size_t index) const
+    const Type& operator[](const size_t index) const
     {
         if (index >= count)
         {
@@ -396,7 +383,6 @@ public:
 
         delete[] deque.data;
         deque.data = nullptr;
-        deque.capacity = count;
         deque.count = count;
 
         if (count > 0)
