@@ -45,14 +45,21 @@ public:
     * @param x - проверяемая абсцисса
     * @return true если x в пределах отрезка
     */
-    bool contains(double x) const;
+    bool contains(const double x) const;
+
+    /**
+    * @brief Вычисляет ординату на отрезке
+    * @param x - абсцисса
+    * @return Ордината
+    */
+    double calculateY(const double x) const;
 
     /**
     * @brief Оператор сдвига влево
     * @param value - величина сдвига
     * @return Новый сдвинутый отрезок
     */
-    Segment operator << (double value) const;
+    Segment operator << (const double value) const;
 
     /**
     * @brief Статический метод чтения отрезка из потока
@@ -83,27 +90,27 @@ public:
     * @brief Конструктор с вектором точек
     * @param points - вектор точек
     */
-    ZeroOrderExtrapolator(vector<Point>& points);
+    ZeroOrderExtrapolator(const vector<Point>& points);
 
     /**
     * @brief Конструктор со списком инициализации
     * @param points - список точек
     */
-    ZeroOrderExtrapolator(initializer_list<Point> points);
+    ZeroOrderExtrapolator(const initializer_list<Point> points);
 
     /**
     * @brief Метод расчёта ординаты по заданной абсциссе
     * @param x - абсцисса
     * @return Вычисленная ордината (кусочно-постоянная функция)
     */
-    double calculateY(double x) const override;
+    double calculateY(const double x) const override;
 
     /**
     * @brief Оператор сдвига влево для всех отрезков
     * @param value - величина сдвига
     * @return Сдвинутый экстраполятор
     */
-    ZeroOrderExtrapolator operator << (double value) const;
+    ZeroOrderExtrapolator operator << (const double value) const;
 
     /**
     * @brief Статический метод чтения отрезка
