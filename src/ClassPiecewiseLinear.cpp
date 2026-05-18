@@ -20,11 +20,11 @@ vector<Point> PiecewiseLinearApproximation::getPoints() const {
 
 vector<Point> PiecewiseLinearApproximation::readPoints(istream& is) {
     vector<Point> pts;
-    int n;
+    size_t n;
     cout << "Введите количество точек: ";
     if (!(is >> n)) return pts;
     
-    for (int i = 0; i < n; ++i) {
+    for (size_t i = 0; i < n; ++i) {
         Point p;
         cout << "Точка " << i + 1 << " (x y): ";
         is >> p;
