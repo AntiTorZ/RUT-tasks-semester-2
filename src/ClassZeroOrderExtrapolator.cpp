@@ -17,7 +17,7 @@ Point Segment::getRightPoint() const {
     return rightPoint;
 }
 
-bool Segment::contains(double x) const {
+bool Segment::contains(const double x) const {
     double leftX = leftPoint.getX();
     double rightX = rightPoint.getX();
     
@@ -27,14 +27,14 @@ bool Segment::contains(double x) const {
     return greaterOrEqualLeft && lessThanRight;
 }
 
-double Segment::calculateY(double x) const {
+double Segment::calculateY(const double x) const {
     if (contains(x)) {
         return leftPoint.getY();
     }
     throw out_of_range("x вне пределов отрезка");
 }
 
-Segment Segment::operator<<(double value) const {
+Segment Segment::operator<<(const double value) const {
     Point newLeft(leftPoint.getX() - value, leftPoint.getY());
     Point newRight(rightPoint.getX() - value, rightPoint.getY());
     return Segment(newLeft, newRight);
@@ -49,11 +49,11 @@ Segment Segment::read(istream& is) {
     return Segment(p1, p2);
 }
 
-ZeroOrderExtrapolator::ZeroOrderExtrapolator(vector<Point>& points) : PiecewiseLinearApproximation(points) {
+ZeroOrderExtrapolator::ZeroOrderExtrapolator(const vector<Point>& points) : PiecewiseLinearApproximation(const_cast<vector<Point>&>(points)) {
     buildSegments();
 }
 
-ZeroOrderExtrapolator::ZeroOrderExtrapolator(initializer_list<Point> points) : PiecewiseLinearApproximation(points) {
+ZeroOrderExtrapolator::ZeroOrderExtrapolator(const initializer_list<Point> points) : PiecewiseLinearApproximation(points) {
     buildSegments();
 }
 
@@ -66,7 +66,7 @@ void ZeroOrderExtrapolator::buildSegments() {
     }
 }
 
-double ZeroOrderExtrapolator::calculateY(double x) const {
+double ZeroOrderExtrapolator::calculateY(const double x) const {
     for (const auto& seg : segments) {
         if (seg.contains(x)) {
             return seg.getLeftPoint().getY();
@@ -88,7 +88,7 @@ double ZeroOrderExtrapolator::calculateY(double x) const {
     return 0.0;
 }
 
-ZeroOrderExtrapolator ZeroOrderExtrapolator::operator<<(double value) const {
+ZeroOrderExtrapolator ZeroOrderExtrapolator::operator<<(const double value) const {
     ZeroOrderExtrapolator result(*this);
     result.segments.clear();
     for (const auto& seg : this->segments) {
