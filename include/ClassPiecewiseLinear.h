@@ -53,7 +53,7 @@ public:
     * @param x - абсцисса
     * @return Вычисленная ордината
     */
-    virtual double calculateY(double x) const = 0;
+    virtual double calculateY(const double x) const = 0;
 
     /**
     * @brief Статический метод чтения точек из потока
